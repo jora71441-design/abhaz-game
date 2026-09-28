@@ -3,25 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Abhaz Band 16-Bit Prototype</title>
+    <title>Abhaz Band 16-Bit</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
-        body { background: #111; color: #fff; font-family: 'Courier New', monospace; text-align: center; }
-        #game-container { width: 100%; max-width: 480px; margin: 0 auto; background: #222; min-height: 100vh; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: 'Press Start 2P', monospace; }
+        body { background: #0f0f1b; color: #fff; text-align: center; }
+        #game-container { width: 100%; max-width: 480px; margin: 0 auto; background: #1a1c2c; min-height: 100vh; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 2px solid #3b5dc9; border-right: 2px solid #3b5dc9; }
         .screen { display: none; padding: 20px; flex-direction: column; justify-content: center; min-height: 100vh; }
         .active { display: flex; }
-        h1 { color: #ffcc00; text-shadow: 2px 2px #ff0000; font-size: 24px; margin-bottom: 15px; }
-        .btn { background: #ffcc00; color: #000; border: 4px solid #fff; padding: 12px; font-weight: bold; font-size: 16px; margin-top: 15px; cursor: pointer; text-transform: uppercase; }
-        .btn:active { background: #ff9900; }
-        input, select { padding: 10px; margin: 8px 0; background: #000; color: #0f0; border: 2px solid #0f0; font-family: monospace; font-size: 16px; width: 100%; }
+        
+        h1 { color: #ffcd75; text-shadow: 3px 3px #a7f070, 5px 5px #3b5dc9; font-size: 16px; margin-bottom: 20px; line-height: 1.4; }
+        p, label { font-size: 9px; line-height: 1.6; color: #c0cbdc; margin-bottom: 8px; }
+        
+        .btn { background: #ffcd75; color: #25082e; border: 4px solid #fff; padding: 14px; font-size: 10px; margin-top: 15px; cursor: pointer; text-transform: uppercase; box-shadow: 0 6px #b86f52; }
+        .btn:active { transform: translateY(4px); box-shadow: 0 2px #b86f52; }
+        
+        input, select { padding: 10px; margin: 8px 0 16px 0; background: #0f0f1b; color: #a7f070; border: 2px solid #a7f070; font-size: 10px; width: 100%; text-align: center; }
         
         /* Canvas & HUD */
-        #canvas-wrap { position: relative; width: 100%; height: 260px; background: #000; }
+        #canvas-wrap { position: relative; width: 100%; height: 240px; background: #000; border-top: 4px solid #3b5dc9; border-bottom: 4px solid #3b5dc9; }
         canvas { width: 100%; height: 100%; image-rendering: pixelated; }
-        #hud { display: flex; justify-content: space-between; background: #333; padding: 8px; font-size: 12px; color: #0f0; border-bottom: 2px solid #555; }
-        #controls { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .ctrl-btn { background: #444; color: #fff; border: 2px solid #888; padding: 20px; font-size: 14px; font-weight: bold; }
-        .ctrl-btn:active { background: #666; }
+        #hud { display: flex; justify-content: space-between; background: #10121c; padding: 10px; font-size: 8px; color: #a7f070; }
+        #controls { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #1a1c2c; }
+        .ctrl-btn { background: #3b5dc9; color: #fff; border: 3px solid #73bed2; padding: 18px 5px; font-size: 9px; font-weight: bold; box-shadow: 0 4px #121841; }
+        .ctrl-btn:active { transform: translateY(3px); box-shadow: 0 1px #121841; }
+        #btn-gel { background: #b86f52; border-color: #ffcd75; }
     </style>
 </head>
 <body>
@@ -30,36 +37,36 @@
 
     <!-- ШАГ 0: АНТРОПОМЕТРИЯ -->
     <div id="screen-profile" class="screen active">
-        <h1>ABHAZ BAND 16-BIT</h1>
-        <p>Создай профиль райдера:</p>
-        <label>Рост (см):</label>
+        <h1>ABHAZ BAND<br>16-BIT</h1>
+        <p>ПРОФИЛЬ РАЙДЕРА</p>
+        <label>РОСТ (СМ):</label>
         <input type="number" id="input-height" value="180">
-        <label>Вес (кг):</label>
+        <label>ВЕС (КГ):</label>
         <input type="number" id="input-weight" value="75">
-        <button class="btn" onclick="goToBase()">Далее в Гараж</button>
+        <button class="btn" onclick="goToBase()">В ГАРАЖ &#8594;</button>
     </div>
 
-    <!-- ШАГ 1: БАЗА / СЕПАП -->
+    <!-- ШАГ 1: БАЗА -->
     <div id="screen-base" class="screen">
-        <h1>ГАРАЖ (ЭТАП 1)</h1>
-        <p id="profile-summary" style="color: #0f0; margin-bottom: 10px;"></p>
-        <label>Выбор Байка:</label>
+        <h1>ГАРАЖ</h1>
+        <p id="profile-summary" style="color: #a7f070; margin-bottom: 15px;"></p>
+        <label>ВЫБОР БАЙКА:</label>
         <select id="select-bike">
-            <option value="road">Шоссейник (Скорость +)</option>
-            <option value="gravel">Гравийник (Контроль +)</option>
+            <option value="road">ШОССЕЙНИК (СКОРОСТЬ +)</option>
+            <option value="gravel">ГРАВИЙНИК (КОНТРОЛЬ +)</option>
         </select>
-        <label>Запас Гелей:</label>
+        <label>ЗАПАС ГЕЛЕЙ:</label>
         <select id="select-gels">
-            <option value="2">2 Геля (Легкий вес)</option>
-            <option value="4">4 Геля (Запас энергии)</option>
+            <option value="2">2 ГЕЛЯ (ЛЕГКИЙ)</option>
+            <option value="4">4 ГЕЛЯ (ЗАПАС)</option>
         </select>
-        <button class="btn" onclick="startGame()">На Маршрут!</button>
+        <button class="btn" onclick="startGame()">НА МАРШРУТ! &#128692;</button>
     </div>
 
     <!-- ШАГ 2: 2D ТРАССА -->
     <div id="screen-race" class="screen" style="padding:0; justify-content: flex-start;">
         <div id="hud">
-            <div>СПРИНТ: <span id="hud-speed">0</span> км/ч</div>
+            <div>КМ/Ч: <span id="hud-speed">0</span></div>
             <div>ЭНЕРГИЯ: <span id="hud-energy">100</span>%</div>
             <div>ГЕЛИ: <span id="hud-gels">0</span></div>
         </div>
@@ -67,25 +74,25 @@
             <canvas id="gameCanvas" width="320" height="180"></canvas>
         </div>
         <div id="controls">
-            <button class="ctrl-btn" id="btn-pedal">КРУТИТЬ (TAP)</button>
-            <button class="ctrl-btn" id="btn-gel" style="background: #a00;">СЪЕСТЬ ГЕЛЬ</button>
+            <button class="ctrl-btn" id="btn-pedal">КРУТИ!</button>
+            <button class="ctrl-btn" id="btn-gel">СЪЕСТЬ ГЕЛЬ</button>
         </div>
     </div>
 
     <!-- ШАГ 3: ФИНИШ -->
     <div id="screen-finish" class="screen">
-        <h1>ФИНИШ ДНЯ!</h1>
-        <p id="finish-results" style="line-height: 1.6;"></p>
-        <button class="btn" onclick="location.reload()">Заново</button>
+        <h1>ФИНИШ!</h1>
+        <p id="finish-results" style="line-height: 1.8;"></p>
+        <button class="btn" onclick="location.reload()">ЕЩЕ РАЗ</button>
     </div>
 
 </div>
 
 <script>
-    // Игровые переменные
     let player = { height: 180, weight: 75, bike: 'road', gels: 2, speed: 0, energy: 100, distance: 0 };
     let gameInterval, canvas, ctx;
     let obstacleX = 320;
+    let bgOffset = 0;
 
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -95,77 +102,104 @@
     function goToBase() {
         player.height = parseInt(document.getElementById('input-height').value) || 180;
         player.weight = parseInt(document.getElementById('input-weight').value) || 75;
-        
-        let trait = player.weight > 80 ? "Мощняш (Спуск +)" : "Горняк (Подъем +)";
-        document.getElementById('profile-summary').innerText = `Профиль: ${player.height}см / ${player.weight}кг [${trait}]`;
+        let trait = player.weight > 80 ? "МОЩНЯШ" : "ГОРНЯК";
+        document.getElementById('profile-summary').innerText = `${player.height}СМ / ${player.weight}КГ [${trait}]`;
         showScreen('screen-base');
     }
 
     function startGame() {
         player.bike = document.getElementById('select-bike').value;
         player.gels = parseInt(document.getElementById('select-gels').value);
-        player.energy = 100;
-        player.speed = 0;
-        player.distance = 0;
+        player.energy = 100; player.speed = 0; player.distance = 0;
 
         showScreen('screen-race');
-        
         canvas = document.getElementById('gameCanvas');
         ctx = canvas.getContext('2d');
-        
-        // Настройка кнопок
+        ctx.imageSmoothingEnabled = false;
+
         document.getElementById('btn-pedal').onclick = () => {
-            if(player.energy > 5) {
-                let accel = player.bike === 'road' ? 4 : 2.5;
-                player.speed = Math.min(player.speed + accel, 45);
-                player.energy -= 1.5;
+            if(player.energy > 3) {
+                let accel = player.bike === 'road' ? 3.5 : 2.2;
+                player.speed = Math.min(player.speed + accel, 42);
+                player.energy -= 1.2;
             }
         };
 
         document.getElementById('btn-gel').onclick = () => {
             if(player.gels > 0) {
                 player.gels--;
-                player.energy = Math.min(player.energy + 35, 100);
+                player.energy = Math.min(player.energy + 40, 100);
             }
         };
 
-        // Главный цикл
         obstacleX = 320;
-        gameInterval = setInterval(updateGame, 50);
+        gameInterval = setInterval(updateGame, 1000 / 30);
+    }
+
+    function drawPixelBike(x, y) {
+        // Отрисовка велосипедиста в пиксель-арте
+        ctx.fillStyle = '#ffcd75'; ctx.fillRect(x + 6, y - 16, 6, 6); // Голова/Шлем
+        ctx.fillStyle = '#ff4757'; ctx.fillRect(x + 4, y - 10, 10, 8); // Джерси Abhaz Band
+        ctx.fillStyle = '#2f3542'; ctx.fillRect(x + 2, y - 2, 6, 4);   // Велошорты
+        
+        // Рама и колеса
+        ctx.fillStyle = '#57606f';
+        ctx.beginPath(); ctx.arc(x - 2, y + 6, 6, 0, Math.PI * 2); ctx.stroke(); // Заднее колесо
+        ctx.beginPath(); ctx.arc(x + 16, y + 6, 6, 0, Math.PI * 2); ctx.stroke(); // Переднее колесо
+        ctx.fillStyle = '#eccc68'; ctx.fillRect(x + 2, y, 10, 2); // Рама
+    }
+
+    function drawCow(x, y) {
+        // Пиксельная коровейка на дороге
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(x, y, 22, 12);
+        ctx.fillStyle = '#2f3542'; 
+        ctx.fillRect(x + 3, y + 2, 5, 5); ctx.fillRect(x + 12, y + 4, 6, 4); // Пятна
+        ctx.fillRect(x + 18, y - 4, 6, 6); // Голова
+        ctx.fillStyle = '#ff7f50'; ctx.fillRect(x + 2, y + 12, 2, 4); ctx.fillRect(x + 16, y + 12, 2, 4); // Ножки
     }
 
     function updateGame() {
-        // Падение скорости и расход энергии от веса
-        player.speed = Math.max(0, player.speed - 0.8);
-        player.energy = Math.max(0, player.energy - (player.speed * 0.03));
-        player.distance += player.speed * 0.1;
+        player.speed = Math.max(0, player.speed - 0.5);
+        player.energy = Math.max(0, player.energy - (player.speed * 0.025));
+        player.distance += player.speed * 0.08;
+        bgOffset += player.speed * 0.3;
 
-        // Движение препятствия (Корова на дороге)
-        obstacleX -= player.speed * 0.5;
-        if(obstacleX < -30) obstacleX = 320 + Math.random() * 200;
+        // --- РЕНДЕР 16-BIT АРТА ---
+        // Небо и Солнце
+        ctx.fillStyle = '#1e3799'; ctx.fillRect(0, 0, 320, 70);
+        ctx.fillStyle = '#f6b93b'; ctx.beginPath(); ctx.arc(280, 30, 14, 0, Math.PI*2); ctx.fill();
 
-        // Отрисовка Pixel Art
-        ctx.fillStyle = '#4b6584'; ctx.fillRect(0, 0, 320, 100); // Небо
-        ctx.fillStyle = '#2bcbba'; ctx.fillRect(0, 70, 320, 30);  // Горы/Задник
-        ctx.fillStyle = '#778ca3'; ctx.fillRect(0, 100, 320, 80); // Дорога
+        // Пиксельные горы Абхазии (Параллакс)
+        ctx.fillStyle = '#0c2461';
+        for(let i=0; i<5; i++) {
+            let gx = (i * 90 - (bgOffset * 0.2) % 90);
+            ctx.beginPath(); ctx.moveTo(gx, 70); ctx.lineTo(gx+45, 30); ctx.lineTo(gx+90, 70); ctx.fill();
+        }
 
-        // Игрок (Велосипедист)
-        ctx.fillStyle = '#ff5252'; 
-        ctx.fillRect(40, 130 - (player.height > 185 ? 5 : 0), 20, 20); // Тело
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(45, 145, 10, 10); // Колеса
+        // Обочина / Лес
+        ctx.fillStyle = '#079992'; ctx.fillRect(0, 70, 320, 25);
 
-        // Препятствие (Корова)
-        ctx.fillStyle = '#000';
-        ctx.fillRect(obstacleX, 135, 25, 15);
+        // Дорога с разметкой
+        ctx.fillStyle = '#3c6382'; ctx.fillRect(0, 95, 320, 85);
+        ctx.fillStyle = '#f8c291';
+        for(let rx=0; rx<320; rx+=40) {
+            let lineX = (rx - (bgOffset % 40));
+            ctx.fillRect(lineX, 135, 20, 3); // Прерывистая линия
+        }
 
-        // Обновление HUD
+        // Объекты
+        drawPixelBike(40, 130);
+        
+        obstacleX -= player.speed * 0.6;
+        if(obstacleX < -30) obstacleX = 320 + Math.random() * 180;
+        drawCow(obstacleX, 130);
+
+        // HUD
         document.getElementById('hud-speed').innerText = Math.round(player.speed);
         document.getElementById('hud-energy').innerText = Math.round(player.energy);
         document.getElementById('hud-gels').innerText = player.gels;
 
-        // Проверка финиша или полной остановки без энергии
-        if(player.distance >= 300 || (player.energy <= 0 && player.speed === 0)) {
+        if(player.distance >= 250 || (player.energy <= 0 && player.speed === 0)) {
             clearInterval(gameInterval);
             finishGame();
         }
@@ -174,10 +208,10 @@
     function finishGame() {
         showScreen('screen-finish');
         let res = document.getElementById('finish-results');
-        if(player.distance >= 300) {
-            res.innerHTML = `<span style="color:#0f0">УСПЕХ!</span><br>Дистанция пройдена!<br>Промокод за прохождение: <b>ABHAZ_PROMO_2026</b>`;
+        if(player.distance >= 250) {
+            res.innerHTML = `<span style="color:#a7f070">УСПЕХ!</span><br><br>ДИСТАНЦИЯ ПРОЙДЕНА!<br>ПРОМОКОД:<br><b style="color:#ffcd75">ABHAZ_2026</b>`;
         } else {
-            res.innerHTML = `<span style="color:#f00">ГОЛОДНЫЙ ОБМОРОК!</span><br>Закончилась энергия.<br>Возьми больше гелей на Базе!`;
+            res.innerHTML = `<span style="color:#ff4757">КАПОТ!</span><br><br>ЗАКОНЧИЛИСЬ СИЛЫ.<br>ВОЗЬМИ БОЛЬШЕ ГЕЛЕЙ!`;
         }
     }
 </script>
