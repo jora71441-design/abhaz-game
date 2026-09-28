@@ -8,27 +8,38 @@
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
         * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: 'Press Start 2P', monospace; }
-        body { background: #0f0f1b; color: #fff; text-align: center; }
-        #game-container { width: 100%; max-width: 480px; margin: 0 auto; background: #1a1c2c; min-height: 100vh; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 2px solid #3b5dc9; border-right: 2px solid #3b5dc9; }
+        body { background: #000; color: #fff; text-align: center; }
+        #game-container { width: 100%; max-width: 480px; margin: 0 auto; background: #050505; min-height: 100vh; position: relative; overflow: hidden; display: flex; flex-direction: column; border-left: 2px solid #222; border-right: 2px solid #222; }
         .screen { display: none; padding: 20px; flex-direction: column; justify-content: center; min-height: 100vh; }
         .active { display: flex; }
         
-        h1 { color: #ffcd75; text-shadow: 3px 3px #a7f070, 5px 5px #3b5dc9; font-size: 16px; margin-bottom: 20px; line-height: 1.4; }
-        p, label { font-size: 9px; line-height: 1.6; color: #c0cbdc; margin-bottom: 8px; }
+        /* Брендовая триколор-полоса */
+        .brand-stripe { height: 6px; width: 100%; display: flex; margin: 15px 0; }
+        .stripe-red { background: #E30613; flex: 1; }
+        .stripe-white { background: #FFFFFF; flex: 1; }
+        .stripe-green { background: #00A859; flex: 1; }
+
+        h1 { color: #fff; font-size: 16px; margin-bottom: 10px; letter-spacing: 2px; line-height: 1.4; text-transform: uppercase; }
+        p, label { font-size: 8px; line-height: 1.6; color: #888; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
         
-        .btn { background: #ffcd75; color: #25082e; border: 4px solid #fff; padding: 14px; font-size: 10px; margin-top: 15px; cursor: pointer; text-transform: uppercase; box-shadow: 0 6px #b86f52; }
-        .btn:active { transform: translateY(4px); box-shadow: 0 2px #b86f52; }
+        .btn { background: #fff; color: #000; border: none; padding: 16px; font-size: 10px; margin-top: 15px; cursor: pointer; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; box-shadow: 0 4px #444; }
+        .btn:active { transform: translateY(2px); box-shadow: 0 2px #444; }
         
-        input, select { padding: 10px; margin: 8px 0 16px 0; background: #0f0f1b; color: #a7f070; border: 2px solid #a7f070; font-size: 10px; width: 100%; text-align: center; }
+        input, select { padding: 12px; margin: 8px 0 16px 0; background: #111; color: #00A859; border: 2px solid #00A859; font-size: 10px; width: 100%; text-align: center; outline: none; }
         
         /* Canvas & HUD */
-        #canvas-wrap { position: relative; width: 100%; height: 240px; background: #000; border-top: 4px solid #3b5dc9; border-bottom: 4px solid #3b5dc9; }
+        #canvas-wrap { position: relative; width: 100%; height: 240px; background: #000; border-top: 3px solid #fff; border-bottom: 3px solid #fff; }
         canvas { width: 100%; height: 100%; image-rendering: pixelated; }
-        #hud { display: flex; justify-content: space-between; background: #10121c; padding: 10px; font-size: 8px; color: #a7f070; }
-        #controls { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #1a1c2c; }
-        .ctrl-btn { background: #3b5dc9; color: #fff; border: 3px solid #73bed2; padding: 18px 5px; font-size: 9px; font-weight: bold; box-shadow: 0 4px #121841; }
-        .ctrl-btn:active { transform: translateY(3px); box-shadow: 0 1px #121841; }
-        #btn-gel { background: #b86f52; border-color: #ffcd75; }
+        #hud { display: flex; justify-content: space-between; background: #000; padding: 12px 10px; font-size: 8px; color: #fff; border-bottom: 1px solid #222; }
+        #hud span { color: #00A859; }
+        #controls { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: #050505; }
+        .ctrl-btn { background: #111; color: #fff; border: 2px solid #fff; padding: 18px 5px; font-size: 8px; cursor: pointer; text-transform: uppercase; }
+        .ctrl-btn:active { background: #fff; color: #000; }
+        #btn-gel { border-color: #E30613; color: #E30613; }
+        #btn-gel:active { background: #E30613; color: #fff; }
+
+        /* Пиксельная ладонь */
+        .hand-logo { font-size: 24px; margin-bottom: 10px; line-height: 1; color: #fff; }
     </style>
 </head>
 <body>
@@ -37,7 +48,13 @@
 
     <!-- ШАГ 0: АНТРОПОМЕТРИЯ -->
     <div id="screen-profile" class="screen active">
-        <h1>ABHAZ BAND<br>16-BIT</h1>
+        <div class="hand-logo">&#10025; &#10025; &#9995; &#10025; &#10025;</div>
+        <h1>ABHAZ BAND</h1>
+        <div class="brand-stripe">
+            <div class="stripe-red"></div>
+            <div class="stripe-white"></div>
+            <div class="stripe-green"></div>
+        </div>
         <p>ПРОФИЛЬ РАЙДЕРА</p>
         <label>РОСТ (СМ):</label>
         <input type="number" id="input-height" value="180">
@@ -49,7 +66,12 @@
     <!-- ШАГ 1: БАЗА -->
     <div id="screen-base" class="screen">
         <h1>ГАРАЖ</h1>
-        <p id="profile-summary" style="color: #a7f070; margin-bottom: 15px;"></p>
+        <div class="brand-stripe">
+            <div class="stripe-red"></div>
+            <div class="stripe-white"></div>
+            <div class="stripe-green"></div>
+        </div>
+        <p id="profile-summary" style="color: #00A859; margin-bottom: 15px;"></p>
         <label>ВЫБОР БАЙКА:</label>
         <select id="select-bike">
             <option value="road">ШОССЕЙНИК (СКОРОСТЬ +)</option>
@@ -57,16 +79,16 @@
         </select>
         <label>ЗАПАС ГЕЛЕЙ:</label>
         <select id="select-gels">
-            <option value="2">2 ГЕЛЯ (ЛЕГКИЙ)</option>
+            <option value="2">2 ГЕЛЯ (ЛЕГКИЙ ВЕС)</option>
             <option value="4">4 ГЕЛЯ (ЗАПАС)</option>
         </select>
-        <button class="btn" onclick="startGame()">НА МАРШРУТ! &#128692;</button>
+        <button class="btn" onclick="startGame()">НА МАРШРУТ!</button>
     </div>
 
     <!-- ШАГ 2: 2D ТРАССА -->
     <div id="screen-race" class="screen" style="padding:0; justify-content: flex-start;">
         <div id="hud">
-            <div>КМ/Ч: <span id="hud-speed">0</span></div>
+            <div>СКОРОСТЬ: <span id="hud-speed">0</span> КМ/Ч</div>
             <div>ЭНЕРГИЯ: <span id="hud-energy">100</span>%</div>
             <div>ГЕЛИ: <span id="hud-gels">0</span></div>
         </div>
@@ -81,8 +103,13 @@
 
     <!-- ШАГ 3: ФИНИШ -->
     <div id="screen-finish" class="screen">
-        <h1>ФИНИШ!</h1>
-        <p id="finish-results" style="line-height: 1.8;"></p>
+        <h1>ФИНИШ</h1>
+        <div class="brand-stripe">
+            <div class="stripe-red"></div>
+            <div class="stripe-white"></div>
+            <div class="stripe-green"></div>
+        </div>
+        <p id="finish-results" style="line-height: 1.8; color: #fff;"></p>
         <button class="btn" onclick="location.reload()">ЕЩЕ РАЗ</button>
     </div>
 
@@ -137,25 +164,26 @@
     }
 
     function drawPixelBike(x, y) {
-        // Отрисовка велосипедиста в пиксель-арте
-        ctx.fillStyle = '#ffcd75'; ctx.fillRect(x + 6, y - 16, 6, 6); // Голова/Шлем
-        ctx.fillStyle = '#ff4757'; ctx.fillRect(x + 4, y - 10, 10, 8); // Джерси Abhaz Band
-        ctx.fillStyle = '#2f3542'; ctx.fillRect(x + 2, y - 2, 6, 4);   // Велошорты
+        // Райдер в чёрной форме Abhaz Band с красной полосой
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(x + 6, y - 16, 6, 6); // Шлем
+        ctx.fillStyle = '#111111'; ctx.fillRect(x + 4, y - 10, 10, 8); // Чёрное джерси
+        ctx.fillStyle = '#E30613'; ctx.fillRect(x + 4, y - 6, 10, 2);  // Красный акцент
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(x + 2, y - 2, 6, 4);   // Велошорты
         
-        // Рама и колеса
-        ctx.fillStyle = '#57606f';
+        // Колеса и рама
+        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.arc(x - 2, y + 6, 6, 0, Math.PI * 2); ctx.stroke(); // Заднее колесо
         ctx.beginPath(); ctx.arc(x + 16, y + 6, 6, 0, Math.PI * 2); ctx.stroke(); // Переднее колесо
-        ctx.fillStyle = '#eccc68'; ctx.fillRect(x + 2, y, 10, 2); // Рама
+        ctx.fillStyle = '#00A859'; ctx.fillRect(x + 2, y, 10, 2); // Зелёная рама
     }
 
     function drawCow(x, y) {
-        // Пиксельная коровейка на дороге
+        // Корова на дороге
         ctx.fillStyle = '#ffffff'; ctx.fillRect(x, y, 22, 12);
-        ctx.fillStyle = '#2f3542'; 
-        ctx.fillRect(x + 3, y + 2, 5, 5); ctx.fillRect(x + 12, y + 4, 6, 4); // Пятна
-        ctx.fillRect(x + 18, y - 4, 6, 6); // Голова
-        ctx.fillStyle = '#ff7f50'; ctx.fillRect(x + 2, y + 12, 2, 4); ctx.fillRect(x + 16, y + 12, 2, 4); // Ножки
+        ctx.fillStyle = '#000000'; 
+        ctx.fillRect(x + 3, y + 2, 5, 5); ctx.fillRect(x + 12, y + 4, 6, 4);
+        ctx.fillRect(x + 18, y - 4, 6, 6);
+        ctx.fillStyle = '#888888'; ctx.fillRect(x + 2, y + 12, 2, 4); ctx.fillRect(x + 16, y + 12, 2, 4);
     }
 
     function updateGame() {
@@ -164,35 +192,38 @@
         player.distance += player.speed * 0.08;
         bgOffset += player.speed * 0.3;
 
-        // --- РЕНДЕР 16-BIT АРТА ---
-        // Небо и Солнце
-        ctx.fillStyle = '#1e3799'; ctx.fillRect(0, 0, 320, 70);
-        ctx.fillStyle = '#f6b93b'; ctx.beginPath(); ctx.arc(280, 30, 14, 0, Math.PI*2); ctx.fill();
+        // --- РЕНДЕР ТРАССЫ В СТИЛЕ ABHAZ BAND ---
+        // Чёрный фон неба
+        ctx.fillStyle = '#050505'; ctx.fillRect(0, 0, 320, 70);
 
-        // Пиксельные горы Абхазии (Параллакс)
-        ctx.fillStyle = '#0c2461';
+        // Силуэты гор (монохром)
+        ctx.fillStyle = '#1a1a1a';
         for(let i=0; i<5; i++) {
             let gx = (i * 90 - (bgOffset * 0.2) % 90);
-            ctx.beginPath(); ctx.moveTo(gx, 70); ctx.lineTo(gx+45, 30); ctx.lineTo(gx+90, 70); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(gx, 70); ctx.lineTo(gx+45, 25); ctx.lineTo(gx+90, 70); ctx.fill();
         }
 
-        // Обочина / Лес
-        ctx.fillStyle = '#079992'; ctx.fillRect(0, 70, 320, 25);
+        // Фирменная трехполосица вдоль трассы
+        ctx.fillStyle = '#E30613'; ctx.fillRect(0, 70, 320, 3);
+        ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 73, 320, 3);
+        ctx.fillStyle = '#00A859'; ctx.fillRect(0, 76, 320, 3);
 
-        // Дорога с разметкой
-        ctx.fillStyle = '#3c6382'; ctx.fillRect(0, 95, 320, 85);
-        ctx.fillStyle = '#f8c291';
+        // Асфальт
+        ctx.fillStyle = '#111111'; ctx.fillRect(0, 79, 320, 101);
+        
+        // Разметка
+        ctx.fillStyle = '#333333';
         for(let rx=0; rx<320; rx+=40) {
             let lineX = (rx - (bgOffset % 40));
-            ctx.fillRect(lineX, 135, 20, 3); // Прерывистая линия
+            ctx.fillRect(lineX, 130, 20, 2);
         }
 
         // Объекты
-        drawPixelBike(40, 130);
+        drawPixelBike(40, 125);
         
         obstacleX -= player.speed * 0.6;
         if(obstacleX < -30) obstacleX = 320 + Math.random() * 180;
-        drawCow(obstacleX, 130);
+        drawCow(obstacleX, 125);
 
         // HUD
         document.getElementById('hud-speed').innerText = Math.round(player.speed);
@@ -209,9 +240,9 @@
         showScreen('screen-finish');
         let res = document.getElementById('finish-results');
         if(player.distance >= 250) {
-            res.innerHTML = `<span style="color:#a7f070">УСПЕХ!</span><br><br>ДИСТАНЦИЯ ПРОЙДЕНА!<br>ПРОМОКОД:<br><b style="color:#ffcd75">ABHAZ_2026</b>`;
+            res.innerHTML = `<span style="color:#00A859">ФИНИШ ВЗЯТ!</span><br><br>ДИСТАНЦИЯ ПРОЙДЕНА!<br><br>ПРОМОКОД:<br><b style="color:#fff">ABHAZ_2026</b>`;
         } else {
-            res.innerHTML = `<span style="color:#ff4757">КАПОТ!</span><br><br>ЗАКОНЧИЛИСЬ СИЛЫ.<br>ВОЗЬМИ БОЛЬШЕ ГЕЛЕЙ!`;
+            res.innerHTML = `<span style="color:#E30613">КАПОТ!</span><br><br>ЗАКОНЧИЛИСЬ СИЛЫ.<br>ВОЗЬМИ БОЛЬШЕ ГЕЛЕЙ!`;
         }
     }
 </script>
